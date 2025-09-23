@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, Button, View } from 'react-native';
 import { CameraView, useCameraPermissions, BarcodeScanningResult } from 'expo-camera';
-import { ThemedView } from '@/components/themed-view';
 import { ThemedText } from '@/components/themed-text';
 
 export default function QRScannerScreen() {
@@ -17,23 +16,23 @@ export default function QRScannerScreen() {
 
   if (!permission) {
     return (
-      <ThemedView style={styles.container}>
+      <View style={styles.container}>
         <ThemedText>Sprawdzanie uprawnień...</ThemedText>
-      </ThemedView>
+      </View>
     );
   }
 
   if (!permission.granted) {
     return (
-      <ThemedView style={styles.container}>
+      <View style={styles.container}>
         <ThemedText>Brak dostępu do aparatu</ThemedText>
         <Button title="Daj dostęp do kamery" onPress={requestPermission} />
-      </ThemedView>
+      </View>
     );
   }
 
   return (
-    <ThemedView style={styles.container}>
+    <View style={styles.container}>
       {openCamera ? (
         <CameraView
           style={StyleSheet.absoluteFillObject}
@@ -50,7 +49,7 @@ export default function QRScannerScreen() {
           <Button title="Skanuj ponownie" onPress={() => setScanned(false)} />
         </View>
       )}
-    </ThemedView>
+    </View>
   );
 }
 

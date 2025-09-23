@@ -1,20 +1,18 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { TextInput, Button, Text } from 'react-native-paper';
-import { ThemedView } from '@/components/themed-view';
 
 export default function RegisterScreen() {
   return (
-    <ThemedView style={styles.container}>
+    <View style={styles.container}>
       <Text variant="headlineLarge" style={{marginBottom: 20}}>Create an account</Text>
-      <ThemedView style={{ gap: 6, width: '100%', marginBottom: 20 }}>
+      <View style={{ gap: 6, width: '100%', marginBottom: 20 }}>
         <TextInput label="Email" style={styles.input} />
         <TextInput label="Password" secureTextEntry style={styles.input} />
-      </ThemedView>
-
+      </View>
       <Button mode="contained" onPress={() => console.log('Register')}>
         Sign Up
       </Button>
-    </ThemedView>
+    </View>
   );
 }
 
