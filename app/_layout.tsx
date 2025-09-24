@@ -3,13 +3,21 @@ import { DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useAuthStore } from '@/stores/auth.store';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: { staleTime: 1000 * 60 * 5, refetchOnWindowFocus: false },
+  },
+});
 
 export const unstable_settings = {
   anchor: '(tabs)',
 };
 
 export default function RootLayout() {
-  const token = null;
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   const paperTheme = {
     ...PaperDefaultTheme,
@@ -24,14 +32,17 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={DefaultTheme}>
       <PaperProvider theme={paperTheme}>
-        <Stack>
-          {token ? (
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          ) : (
-            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-          )}
-        </Stack>
-        <StatusBar style="auto" />
+        <QueryClientProvider client={queryClient}>
+          <Stack>
+            <Stack.Protected guard={isAuthenticated}>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            </Stack.Protected>
+            <Stack.Protected guard={!isAuthenticated}>
+              <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+            </Stack.Protected>
+          </Stack>
+          <StatusBar style="auto" />
+        </QueryClientProvider>
       </PaperProvider>
     </ThemeProvider>
   );
