@@ -5,6 +5,7 @@ import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useAuthStore } from '@/stores/auth.store';
+import ToastManager from 'toastify-react-native';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -42,6 +43,7 @@ export default function RootLayout() {
             </Stack.Protected>
           </Stack>
           <StatusBar style="auto" />
+          <ToastManager />
         </QueryClientProvider>
       </PaperProvider>
     </ThemeProvider>
