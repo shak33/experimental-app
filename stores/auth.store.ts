@@ -2,17 +2,13 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StorageKeysEnum } from './models/StorageKeys.enum';
-
-interface User {
-  email: string;
-  token: string;
-  username: string;
-}
+import { LoginUserResponse } from '@/api/auth/index.types';
 
 interface AuthState {
-  user: User | null;
+  user: LoginUserResponse['data']['user'] | null;
   isAuthenticated: boolean;
-  login: (email: string, useMock?: boolean) => void;
+  token?: string;
+  login: (data: LoginUserResponse['data']) => void;
   logout: () => void;
 }
 
@@ -21,21 +17,14 @@ export const useAuthStore = create<AuthState>()(
     (set) => ({
       user: null,
       isAuthenticated: false,
+      token: undefined,
 
-      login: (email: string, useMock?: boolean) => {
-        if (useMock) {
-          const mockUser: User = {
-            email: 'john.doe@gmail.com',
-            token: `mock_token_${Date.now()}`,
-            username: 'john.doe33',
-          };
-        
-          set({ user: mockUser, isAuthenticated: true });
-        }
+      login: (data: LoginUserResponse['data']) => {
+        set({ user: data.user, isAuthenticated: true, token: data.token });
       },
       
       logout: () => {
-        set({ user: null, isAuthenticated: false });
+        set({ user: null, isAuthenticated: false, token: undefined });
       },
     }),
     {

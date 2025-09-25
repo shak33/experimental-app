@@ -4,10 +4,9 @@ import { useAuthStore } from '@/stores/auth.store';
 
 export default function HomeScreen() {
   const user = useAuthStore((state) => state.user);
+  const token = useAuthStore((state) => state.token);
   const logout = useAuthStore((state) => state.logout);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-
-  console.log('isAuthenticated', isAuthenticated);
 
   const onLogoutPress = () => {
     logout();
@@ -22,9 +21,9 @@ export default function HomeScreen() {
         <Card.Content>
           <Text variant="titleMedium" style={{marginBottom: 10}}>Dane użytkownika:</Text>
           <Text variant="bodyMedium">Email: {user?.email}</Text>
-          <Text variant="bodyMedium">Nick: {user?.username}</Text>
+          <Text variant="bodyMedium">Imię: {user?.firstName}</Text>
           <Text variant="bodySmall" style={{marginTop: 10, opacity: 0.7}}>
-            Token: {user?.token?.substring(0, 20)}...
+            Token: {token}
           </Text>
           <Text variant="bodySmall" style={{opacity: 0.7}}>
             is isAuthenticated {isAuthenticated ? 'true' : 'false'}
